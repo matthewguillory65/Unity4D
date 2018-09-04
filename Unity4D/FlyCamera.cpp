@@ -1,4 +1,3 @@
-#include <iostream>
 #include "FlyCamera.h"
 #include <glfw3.h>
 
