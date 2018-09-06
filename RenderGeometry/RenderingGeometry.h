@@ -1,9 +1,11 @@
 #pragma once
+#include "../Unity4D/MyApplication.h"
 #include "Vertex.h"
 #include <vector>
-#include <GLM/glm.hpp>
+#include <GLM/glm/glm.hpp>
+#include "../Unity4D/Transform.h"
 
-class RenderingGeometry
+class RenderingGeometry : public MyApplication
 {
 public:
 	RenderingGeometry();
@@ -13,7 +15,18 @@ public:
 	unsigned int ibo;
 	unsigned int vbo;
 	unsigned int vao;
+	unsigned int m_program;
+
+	glm::mat4 m_model;
+	glm::mat4 m_view;
+	glm::mat4 m_projection;
+
+
 	void Startup();
+	void Shutdown();
+	void Update(float dt);
+	void Draw();
+	void createBuffers();
 	//ex. m_verticies of a square, A, B, C, D = {a, b, c, d}
 	//ex. m_indecies for it would be, = {[0], [1], [2], [2], [3], [0]}
 	

@@ -1,5 +1,5 @@
 #include "MyApplication.h"
-#include <Gizmos.h>
+#include "../Dep/includes/Gizmos/Gizmos.h"
 #include <iostream>
 
 using glm::vec3;
@@ -25,7 +25,7 @@ MyApplication::~MyApplication()
 {
 }
 
-int MyApplication::startUp()
+int MyApplication::startUp(const char * title, unsigned int width, unsigned int height, bool fullscreen)
 {
 	if (glfwInit() == false)
 		return -1;
@@ -41,6 +41,7 @@ int MyApplication::startUp()
 	{
 		Draw();
 		Update();
+		FlyCamera update();
 	}
 
 	return 0;
@@ -50,7 +51,6 @@ int MyApplication::Update()
 {
 	mat4 view = glm::lookAt(vec3(10, 10, 10), vec3(0), vec3(0, 1, 0));
 	mat4 projection = glm::perspective(glm::pi<float>() * 0.25f, 16 / 9.f, 0.1f, 1000.f);
-
 
 	camera->setPosition(glm::vec3(10, 10, 10));
 
@@ -73,12 +73,14 @@ int MyApplication::Update()
 		glfwPollEvents();
 	}
 
+	
 
 	return 0;
 }
 
 int MyApplication::Draw()
 {
+	float dt;
 	glm::vec3 currentPosition = glm::vec3(0, 0, 0);
 
 	Gizmos::clear();

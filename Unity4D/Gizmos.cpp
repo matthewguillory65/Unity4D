@@ -1,9 +1,9 @@
 #define GLM_FORCE_SWIZZLE
-#include "Gizmos.h"
+#include "../Dep/includes/Gizmos/Gizmos.h"
 #include "gl_core_4_4.h"
 #include <iostream>
-#include <glm/glm.hpp>
-#include <glm/ext.hpp>
+#include "../Dep/includes/GLM/glm/glm.hpp"
+#include "../Dep/includes/GLM/glm/ext.hpp"
 
 Gizmos* Gizmos::sm_singleton = nullptr;
 

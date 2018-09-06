@@ -1,5 +1,6 @@
+#include <iostream>
 #include "FlyCamera.h"
-#include <glfw3.h>
+#include "../Dep/includes/GLFW32/glfw3.h"
 
 
 FlyCamera::FlyCamera()
@@ -20,19 +21,20 @@ void FlyCamera::update(float dt)
 
 	if (glfwGetKey(window, GLFW_KEY_W))
 	{
-		setPosition(currentPosition + glm::vec3(0, 0, speed) * dt);
+		setPosition(currentPosition.y + glm::vec3(0, 0, speed) * dt);
 	}
 	if (glfwGetKey(window, GLFW_KEY_S))
 	{
-		setPosition(currentPosition - glm::vec3(0, 0, speed) * dt);
+		setPosition(currentPosition.y - glm::vec3(0, 0, speed) * dt);
+		std::cout << "HI" << std::endl;
 	}
 	if (glfwGetKey(window, GLFW_KEY_D))
 	{
-		setPosition(currentPosition - glm::vec3(speed, 0, 0) * dt);
+		setPosition(currentPosition.x - glm::vec3(speed, 0, 0) * dt);
 	}
 	if (glfwGetKey(window, GLFW_KEY_A))
 	{
-		setPosition(currentPosition + glm::vec3(speed, 0, 0) * dt);
+		setPosition(currentPosition.x + glm::vec3(speed, 0, 0) * dt);
 	}
 
 	projectionViewTransform = viewTransform * projectionViewTransform;

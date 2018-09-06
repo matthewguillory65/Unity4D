@@ -3,9 +3,7 @@
 int main()
 {
 	MyApplication* theApp = new MyApplication();
-	if (theApp->startUp() == true)
-		while (theApp->Update() == true)
-			theApp->Draw();
+	theApp->startUp("yus", 800, 600, false);
 
-	return 0;
+	
 }

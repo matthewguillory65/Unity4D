@@ -1,7 +1,7 @@
 #pragma once
 #define GLM_FORCE_SWIZZLE
-#include <glm/glm.hpp>
-#include <glm/ext.hpp>
+#include "../Dep/includes/GLM/glm/glm.hpp"
+#include "../Dep/includes/GLM/glm/ext.hpp"
 class Transform
 {
 public:

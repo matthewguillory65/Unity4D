@@ -3,7 +3,8 @@
 class Vertex
 {
 public:
-	Vertex(glm::vec4);
+	Vertex();
+	Vertex(glm::vec4 pos, glm::vec4 color);
 	~Vertex();
 
 	glm::vec4 position;
