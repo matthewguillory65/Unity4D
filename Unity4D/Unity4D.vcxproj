@@ -75,6 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(SolutionDir)lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)includes\GLFW64;$(SolutionDir)includes\Gizmos;$(SolutionDir)includes\GLM</IncludePath>
+    <OutDir>$(SolutionDir)Dep\lib</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\Users\s178062\Documents\GitHub\Unity4D\Dep;$(IncludePath)</IncludePath>
@@ -136,7 +137,6 @@
     <ClCompile Include="FlyCamera.cpp" />
     <ClCompile Include="Gizmos.cpp" />
     <ClCompile Include="gl_core_4_4.c" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="MyApplication.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
