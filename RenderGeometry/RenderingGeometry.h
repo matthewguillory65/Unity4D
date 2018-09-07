@@ -10,11 +10,7 @@ class RenderingGeometry : public MyApplication
 public:
 	RenderingGeometry();
 	~RenderingGeometry();
-	std::vector<unsigned int> *m_indices;
-	std::vector<Vertex> *m_vertices;
-	unsigned int ibo;
-	unsigned int vbo;
-	unsigned int vao;
+	
 	unsigned int m_program;
 
 	glm::mat4 m_model;
