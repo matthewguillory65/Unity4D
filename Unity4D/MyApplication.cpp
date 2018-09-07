@@ -33,15 +33,13 @@ int MyApplication::startUp(const char * title, unsigned int width, unsigned int 
 	window = glfwCreateWindow(1280, 720, "Unity4D", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 	ogl_LoadFunctions();
-	Gizmos::create();
 	m_model = mat4(1);
-	camera = new FlyCamera;
+	camera = new FlyCamera();
 	camera->setLookAt(glm::vec3(10, 10, 10), glm::vec3(0), glm::vec3(0, 1, 0));
 	while (glfwWindowShouldClose(window) == false)
 	{
 		Draw();
 		Update();
-		FlyCamera update();
 	}
 
 	return 0;
