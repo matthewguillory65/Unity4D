@@ -1,38 +1,28 @@
 #pragma once
 #include "../Unity4D/MyApplication.h"
-#include "Vertex.h"
 #include <vector>
+#include "MeshRenderer.h"
 #include <GLM/glm/glm.hpp>
-#include "../Unity4D/Transform.h"
+#include "Shader.h"
+
 
 class RenderingGeometry : public MyApplication
 {
 public:
 	RenderingGeometry();
 	~RenderingGeometry();
-	
-	unsigned int m_program;
+
+	MeshRenderer* mesh;
+	Shader* shader;
 
 	glm::mat4 m_model;
 	glm::mat4 m_view;
 	glm::mat4 m_projection;
 
-
-	void Startup();
-	void Shutdown();
-	void Update(float dt);
-	void Draw();
+	void Startup() override;
+	void Shutdown() override;
+	void Update(float dt) override;
+	void Draw() override;
 	void createBuffers();
-	//ex. m_verticies of a square, A, B, C, D = {a, b, c, d}
-	//ex. m_indecies for it would be, = {[0], [1], [2], [2], [3], [0]}
-	
-	//"gen, bind, buffer"
-	//glGenBuffers("how many, 1", &m_vbo)
-	//glBindBuffer("mode, GL_ArrayBuffer", m_vbo)
-	//glBufferData(GL_Array_buffer, 4*32, m_verticies, GL_Static_draw)
-
-
-
-
 };
 
