@@ -26,7 +26,7 @@ bool Shader::load(const char * filename, unsigned int type, bool isFile)
 	glAttachShader(m_program, vertexShader);
 	glAttachShader(m_program, fragmentShader);
 	glLinkProgram(m_program);
-	return false;
+	return isFile;
 }
 
 bool Shader::attach()

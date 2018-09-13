@@ -49,7 +49,6 @@ void RenderingGeometry::Update(float dt)
 
 void RenderingGeometry::Draw()
 {
-	
 	int variableId = glGetUniformLocation(shader->m_program, "ProjectionViewWorld");
 	glm::mat4 mvp = m_projection * m_view*m_model;
 	glUniformMatrix4fv(variableId, 1, GL_FALSE, &mvp[0][0]);

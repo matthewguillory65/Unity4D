@@ -29,7 +29,7 @@ void MyApplication::run(const char * title, unsigned int width, unsigned int hei
 {
 	float prevTime = glfwGetTime();
 	glfwInit();
-	m_window = glfwCreateWindow(720, 720, "title", NULL, NULL);
+	m_window = glfwCreateWindow(width, height, title, NULL, NULL);
 	glfwMakeContextCurrent(m_window);
 	ogl_LoadFunctions();
 	auto major = ogl_GetMajorVersion();
