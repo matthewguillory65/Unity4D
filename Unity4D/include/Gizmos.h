@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GLM/glm/fwd.hpp"
+#include "GLM/glm/glm.hpp"
 
 class Gizmos {
 public:

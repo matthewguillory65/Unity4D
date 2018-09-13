@@ -1,5 +1,5 @@
 #pragma once
-#include "MyApplication.h"
+#include "../Unity4D/MyApplication.h"
 class GUIApplication : public MyApplication
 {
 	// Inherited via MyApplication

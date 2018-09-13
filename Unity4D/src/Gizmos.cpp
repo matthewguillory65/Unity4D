@@ -2,9 +2,9 @@
 #include "Gizmos.h"
 #include "gl_core_4_4.h"
 
-#include <glm/glm.hpp>
-#include <glm/ext.hpp>
-
+#include <GLM/glm/glm.hpp>
+#include <GLM/glm/ext.hpp>
+#include <iostream>
 Gizmos* Gizmos::sm_singleton = nullptr;
 
 Gizmos::Gizmos(unsigned int a_maxLines, unsigned int a_maxTris,
