@@ -23,7 +23,10 @@
     <ClCompile Include="src\FlyCamera.cpp" />
     <ClCompile Include="src\Gizmos.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
+    <ClCompile Include="src\MeshRender.cpp" />
+    <ClCompile Include="src\MeshRenderer.cpp" />
     <ClCompile Include="src\MyApplication.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,7 +34,10 @@
     <ClInclude Include="include\FlyCamera.h" />
     <ClInclude Include="include\Gizmos.h" />
     <ClInclude Include="include\gl_core_4_4.h" />
+    <ClInclude Include="include\MeshRender.h" />
+    <ClInclude Include="include\MeshRenderer.h" />
     <ClInclude Include="include\MyApplication.h" />
+    <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\Transform.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -115,7 +121,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)dep\include;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dep\include;$(SolutionDir)Unity4D\include;$(SolutionDir)Unity4D\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>

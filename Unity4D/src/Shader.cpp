@@ -2,6 +2,7 @@
 
 Shader::Shader()
 {
+	m_program = glCreateProgram();
 }
 
 Shader::~Shader()
@@ -42,7 +43,7 @@ void Shader::defaultLoad()
 {
 
 	const char*	vsSource = "#version 410\n \
-		                        layout(location = 0) in vec4 Position; \
+		                    layout(location = 0) in vec4 Position; \
                             layout(location = 1) in vec4 Color; \
                             out vec4 vColor; \
                             uniform mat4 ProjectionViewWorld; \

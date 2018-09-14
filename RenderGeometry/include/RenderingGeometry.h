@@ -1,9 +1,10 @@
 #pragma once
-#include "../Unity4D/MyApplication.h"
+#include "MyApplication.h"
 #include <vector>
 #include "MeshRenderer.h"
 #include <GLM/glm/glm.hpp>
 #include "Shader.h"
+
 
 
 class RenderingGeometry : public MyApplication
@@ -23,6 +24,5 @@ public:
 	void Shutdown() override;
 	void Update(float dt) override;
 	void Draw() override;
-	void createBuffers();
 };
 

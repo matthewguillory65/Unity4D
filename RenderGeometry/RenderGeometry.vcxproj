@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Users\s178062\Documents\GitHub\Unity4D\Dep\lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dep\lib;$(SolutionDir)Unity4D\source;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dep\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -80,7 +80,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dep\includes;$(SolutionDir)Unity4D</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)dep\include;$(SolutionDir)Unity4D\include;$(SolutionDir)Unity4D\src;$(SolutionDir)RenderGeometry\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Unity4D.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -123,16 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
-    <ClCompile Include="RenderingGeometry.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\RenderingGeometry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gl_core_4_4.h" />
-    <ClInclude Include="MeshRenderer.h" />
-    <ClInclude Include="RenderingGeometry.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="include\RenderingGeometry.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

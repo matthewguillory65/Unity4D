@@ -1,5 +1,6 @@
 #define GLM_FORCE_SWIZZLE
 #include "RenderingGeometry.h"
+#include "Shader.h"
 
 
 
@@ -30,7 +31,7 @@ void RenderingGeometry::Startup()
 	auto abcd = { glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1) };
 	std::vector<MeshRenderer::Vertex>m_vertices = { a,b,c,d };
 	std::vector<unsigned int>m_indices = { 0 ,1,2,2,3,0 };
-	createBuffers();
+	shader->defaultLoad();
 	mesh = new MeshRenderer();
 	mesh->initialize(m_indices, m_vertices);
 }
@@ -49,7 +50,9 @@ void RenderingGeometry::Update(float dt)
 
 void RenderingGeometry::Draw()
 {
+	shader->Bind();
 	int variableId = glGetUniformLocation(shader->m_program, "ProjectionViewWorld");
 	glm::mat4 mvp = m_projection * m_view*m_model;
 	glUniformMatrix4fv(variableId, 1, GL_FALSE, &mvp[0][0]);
+	shader->UnBind();
 }

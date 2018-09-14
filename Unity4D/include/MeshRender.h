@@ -1,13 +1,17 @@
 #pragma once
 #include <vector>
-#include "Vertex.h"
-#include "RenderingGeometry.h"
+#include "MeshRenderer.h"
 #include "Transform.h"
 class MeshRender
 {
 public:
 	MeshRender();
 	~MeshRender();
+	struct Vertex
+	{
+		glm::vec4 m_position;
+		glm::vec4 m_color;
+	};
 	int Initialize(std::vector<unsigned int>, std::vector<Vertex>);
 	int Render();
 	

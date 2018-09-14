@@ -1,11 +1,11 @@
 #pragma once
-#include "../Unity4D/MyApplication.h"
+#include "MyApplication.h"
 #include <vector>
 #include <GLM/glm/glm.hpp>
 #include "Shader.h"
 
 
-class MeshRenderer : Shader
+class MeshRenderer
 {
 public:
 	MeshRenderer();
