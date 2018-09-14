@@ -1,11 +1,10 @@
 #pragma once
 #include "MyApplication.h"
 #include <vector>
-#include "MeshRenderer.h"
 #include <GLM/glm/glm.hpp>
-#include "Shader.h"
 
-
+class MeshRenderer;
+class Shader;
 
 class RenderingGeometry : public MyApplication
 {

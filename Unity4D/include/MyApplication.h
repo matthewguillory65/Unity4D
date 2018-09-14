@@ -13,5 +13,6 @@ public:
 	virtual void Draw() = 0;
 	GLFWwindow* m_window;
 	FlyCamera* camera;
+	
 };
 

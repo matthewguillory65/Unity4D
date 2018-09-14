@@ -15,17 +15,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\main.cpp">
+    <ClCompile Include="src\RenderingGeometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RenderingGeometry.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gl_core_4_4.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\RenderingGeometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>

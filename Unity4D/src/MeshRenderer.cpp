@@ -15,6 +15,7 @@ void MeshRenderer::initialize(std::vector<unsigned int>& indices, std::vector<Ve
 {
 	m_indices = indices;
 	m_vertices = vertices;
+	create_Buffers();
 }
 
 void MeshRenderer::render()
@@ -23,7 +24,6 @@ void MeshRenderer::render()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLE_STRIP, m_indices.size(), GL_UNSIGNED_INT, 0);
 
-	glUseProgram(0);
 	glBindVertexArray(0);
 }
 
