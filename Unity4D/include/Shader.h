@@ -10,7 +10,7 @@ public:
 	~Shader();
 	void Bind();
 	void UnBind();
-	bool load(const char* filename, unsigned int type, bool isFile = true);
+	bool load(const char* filename[]);
 	bool attach();
 	void defaultLoad();
 	//void Load();

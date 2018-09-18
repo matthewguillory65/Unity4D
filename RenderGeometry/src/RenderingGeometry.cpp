@@ -34,7 +34,9 @@ void RenderingGeometry::Startup()
 	mesh->initialize(m_indices, m_vertices);
 
 	shader = new Shader();
-	shader->defaultLoad();
+
+	shader->load("shader.muh");
+	shader->load("shader.fuh");
 }
 
 void RenderingGeometry::Shutdown()
@@ -44,8 +46,8 @@ void RenderingGeometry::Shutdown()
 void RenderingGeometry::Update(float dt)
 {
 	m_model = glm::mat4(1);
-	glm::vec3 eye = glm::vec3(0, -10, 20);
-	m_view = glm::lookAt(eye, glm::vec3(0), glm::vec3(0, 1, 0));
+	glm::vec3 eye = glm::vec3(0, -20, 300);
+	m_view = glm::lookAt(eye, glm::vec3(0,1,10), glm::vec3(0, 1, 0));
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
 }
 
@@ -53,13 +55,27 @@ void RenderingGeometry::Draw()
 {
 	glUseProgram(shader->m_program);
 	shader->Bind();
-	auto varid =  shader->getUniform("ProjectionViewWorld");
+	auto varid = shader->getUniform("ProjectionViewWorld");
 
-	glm::mat4 mvp = m_projection * m_view * m_model;
+	int yPos = 100;
+	int xMultiple = 0;
 
-	glUniformMatrix4fv(varid, 1, GL_FALSE, &mvp[0][0]);
+	for (int i = 1; i <= 64; i++)
+	{
+		glm::mat4 modelSixFour = glm::mat4(1);
+		modelSixFour = glm::translate(modelSixFour, glm::vec3(-150, 0, 0));
+		modelSixFour = glm::translate(modelSixFour, glm::vec3(xMultiple*20, yPos, 0));
+		glm::mat4 mvpSixFour = m_projection * m_view * modelSixFour;
+		glUniformMatrix4fv(varid, 1, GL_FALSE, &mvpSixFour[0][0]);
+		mesh->render();
+		xMultiple++;
+		if (xMultiple == 8)
+		{
+			yPos -= 20;
+			xMultiple = 0;
+		}
+	}
 
-	mesh->render();
 	shader->UnBind();
 
 	glUseProgram(0);

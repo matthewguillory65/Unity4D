@@ -1,4 +1,7 @@
+#include <iostream>
+#include <fstream>
 #include "Shader.h"
+
 
 Shader::Shader()
 {
@@ -19,8 +22,21 @@ void Shader::UnBind()
 	glUseProgram(0);
 }
 
-bool Shader::load(const char * filename, unsigned int type, bool isFile)
+bool Shader::load(const char * filename[])
 {
+	std::fstream file;
+	file.open(filename);
+	if (file.is_open() == true)
+	{
+		file.read(filename, 256);
+		std::cout << "the file be open" << std::endl;
+	}
+
+	file.close();
+	if (file.is_open() == false)
+	{
+		std::cout << "the file be closed" << std::endl;
+	}
 	return false;
 }
 
@@ -43,7 +59,7 @@ bool Shader::attach()
 
 void Shader::defaultLoad()
 {
-
+	
 	vsSource = "#version 410\n \
 		                    layout(location = 0) in vec4 Position; \
                             layout(location = 1) in vec4 Color; \
