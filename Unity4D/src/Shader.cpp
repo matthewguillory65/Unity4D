@@ -1,6 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <iostream>
-#include <fstream>
+#include <stdio.h>
 #include "Shader.h"
+#include <fstream>
+
+
 
 
 Shader::Shader()
@@ -22,23 +26,36 @@ void Shader::UnBind()
 	glUseProgram(0);
 }
 
-bool Shader::load(const char * filename[])
+bool Shader::load(const char * filename, Shader::SHADER_TYPE shadertype)
 {
-	std::fstream file;
-	file.open(filename);
-	if (file.is_open() == true)
-	{
-		file.read(filename, 256);
-		std::cout << "the file be open" << std::endl;
-	}
+	errno_t err;
+	FILE *file; //create a filestream	
+	std::string data;//create a variable to store the file info line by line
 
-	file.close();
-	if (file.is_open() == false)
+	char buf[500];//creates a character buffer to store the data into
+	err = fopen_s(&file, filename, "r");//open the file  in read mode
+
+	while (std::fgets(buf, sizeof buf, file))//go line by line
 	{
-		std::cout << "the file be closed" << std::endl;
+		data.append(buf);//add line to data
 	}
-	return false;
+	err = fclose(file);//close the file
+
+	switch (shadertype)
+	{
+	case Shader::SHADER_TYPE::VERTEX:
+		vsSource = data.c_str();//we need to 
+		
+		break;
+	case Shader::SHADER_TYPE::FRAGMENT:
+		fsSource = data.c_str();
+		break;
+	}
+	
+	
+	return data.length() > 0;
 }
+
 
 bool Shader::attach()
 {
@@ -53,13 +70,13 @@ bool Shader::attach()
 	glAttachShader(m_program, vertexShader);
 	glAttachShader(m_program, fragmentShader);
 	glLinkProgram(m_program);
-	
+
 	return true;
 }
 
 void Shader::defaultLoad()
 {
-	
+
 	vsSource = "#version 410\n \
 		                    layout(location = 0) in vec4 Position; \
                             layout(location = 1) in vec4 Color; \

@@ -34,9 +34,14 @@ void RenderingGeometry::Startup()
 	mesh->initialize(m_indices, m_vertices);
 
 	shader = new Shader();
+	
+	shader->load("shader.muh", Shader::SHADER_TYPE::VERTEX);
+	shader->load("shader.fuh", Shader::SHADER_TYPE::FRAGMENT);
 
-	shader->load("shader.muh");
-	shader->load("shader.fuh");
+	shader->attach();
+
+	
+	
 }
 
 void RenderingGeometry::Shutdown()

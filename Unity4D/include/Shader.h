@@ -8,9 +8,13 @@ class Shader
 public:
 	Shader();
 	~Shader();
+	enum SHADER_TYPE
+	{
+		VERTEX = 0, FRAGMENT = 1
+	};
 	void Bind();
 	void UnBind();
-	bool load(const char* filename[]);
+	bool load(const char* filename, Shader::SHADER_TYPE shadertype);
 	bool attach();
 	void defaultLoad();
 	//void Load();
@@ -29,6 +33,8 @@ public:
 
 	const char* vsSource;
 	const char* fsSource;
+	std::string vsSourceString;
+	std::string fsSourceString;
 
 	unsigned int m_program;
 };
