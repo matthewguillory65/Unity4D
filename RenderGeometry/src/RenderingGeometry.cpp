@@ -42,6 +42,7 @@ void RenderingGeometry::Startup()
 	shader->attach();
 
 	
+	movement = glm::mat4(1);
 	
 }
 
@@ -59,6 +60,7 @@ void RenderingGeometry::Update(float dt)
 
 void RenderingGeometry::Draw()
 {
+	
 	glUseProgram(shader->m_program);
 	shader->Bind();
 	auto varid = shader->getUniform("ProjectionViewWorld");
@@ -66,16 +68,53 @@ void RenderingGeometry::Draw()
 	int yPos = 100;
 	int xMultiple = 0;
 
-	for (int i = 1; i <= 64; i++)
+	Transform transform;
+	glm::vec3 up(0, 2, 0);
+	glm::vec3 down(0, -2, 0);
+	glm::vec3 right(2, 0, 0);
+	glm::vec3 left(-2, 0, 0);
+	glm::vec3 in(0, 0, 2);
+	glm::vec3 out(0, 0, -2);
+
+
+
+	if (GetAsyncKeyState('W') & 0x8000)
+	{
+		movement *= transform.Translate(up);
+	}
+	if (GetAsyncKeyState('S') & 0x8000)
+	{
+		movement *= transform.Translate(down);
+	}
+	if (GetAsyncKeyState('D') & 0x8000)
+	{
+		movement *= transform.Translate(right);
+	}
+	if (GetAsyncKeyState('A') & 0x8000)
+	{
+		movement *= transform.Translate(left);
+	}
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		movement *= transform.Translate(in);
+	}
+	if (GetAsyncKeyState('Z') & 0x8000)
+	{
+		movement *= transform.Translate(out);
+	}
+
+
+
+	for (int i = 1; i <= 100; i++)
 	{
 		glm::mat4 modelSixFour = glm::mat4(1);
 		modelSixFour = glm::translate(modelSixFour, glm::vec3(-150, 0, 0));
 		modelSixFour = glm::translate(modelSixFour, glm::vec3(xMultiple*20, yPos, 0));
-		glm::mat4 mvpSixFour = m_projection * m_view * modelSixFour;
+		glm::mat4 mvpSixFour = m_projection * m_view * modelSixFour * movement;
 		glUniformMatrix4fv(varid, 1, GL_FALSE, &mvpSixFour[0][0]);
 		mesh->render();
 		xMultiple++;
-		if (xMultiple == 8)
+		if (xMultiple == 10)
 		{
 			yPos -= 20;
 			xMultiple = 0;
@@ -83,6 +122,23 @@ void RenderingGeometry::Draw()
 	}
 
 	shader->UnBind();
-
+	RenderingGeometry render;
+	render.genHalfCircle(6);
 	glUseProgram(0);
+}
+
+std::vector<glm::vec4> RenderingGeometry::genHalfCircle(int np)
+{
+	glm::vec4 point;
+	std::vector<glm::vec4> points;
+	float angle = 3.14 / np;
+	for (float theta = 0; theta < 3.14; theta += angle)
+	{
+		points.push_back(glm::vec4(glm::cos(theta), glm::sin(theta), 0, 1));
+	}
+
+	//How do we make this rotate?
+	//
+
+	return points;
 }
