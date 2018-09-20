@@ -29,30 +29,46 @@ void Shader::UnBind()
 bool Shader::load(const char * filename, Shader::SHADER_TYPE shadertype)
 {
 	errno_t err;
-	FILE *file; //create a filestream	
-	std::string data;//create a variable to store the file info line by line
-
-	char buf[500];//creates a character buffer to store the data into
-	err = fopen_s(&file, filename, "r");//open the file  in read mode
-
-	while (std::fgets(buf, sizeof buf, file))//go line by line
+	FILE* file;
+	err = fopen_s(&file, filename, "r");
+	char buf[230];//creates a character buffer to store the line into
+	while (std::fgets(buf, sizeof buf, file))
 	{
-		data.append(buf);//add line to data
+		if (shadertype == 0)
+		{
+			vsSourceString.append(buf);
+		}
+		if (shadertype == 1)
+		{
+			fsSourceString.append(buf);
+		}
 	}
-	err = fclose(file);//close the file
-
-	switch (shadertype)
+	if (shadertype == 0)
 	{
-	case Shader::SHADER_TYPE::VERTEX:
-		vsSource = data.c_str();//we need to 
-		
-		break;
-	case Shader::SHADER_TYPE::FRAGMENT:
-		fsSource = data.c_str();
-		break;
+		vsSource = vsSourceString.c_str();
 	}
-	
-	
+	if (shadertype == 1)
+	{
+		fsSource = fsSourceString.c_str();
+	}
+
+
+	//while (std::fgets(buf, sizeof buf, file))//go line by line
+	//{
+	//	data.append(buf);//add line to data
+	//}
+	//err = fclose(file);//close the file
+	//const char* tmp = data.c_str();
+	//switch (shadertype)
+	//{
+	//case Shader::SHADER_TYPE::VERTEX:
+	//	
+	//	break;
+	//case Shader::SHADER_TYPE::FRAGMENT:
+	//	memcpy(&fsSource, &tmp, 250);
+	//	break;
+	//}
+
 	return data.length() > 0;
 }
 

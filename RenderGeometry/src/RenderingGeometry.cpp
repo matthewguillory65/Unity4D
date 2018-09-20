@@ -1,4 +1,5 @@
 #define GLM_FORCE_SWIZZLE
+#include <iostream>
 #include "RenderingGeometry.h"
 #include "Shader.h"
 

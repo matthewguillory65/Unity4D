@@ -31,6 +31,7 @@ public:
 	unsigned int vertexShader;
 	unsigned int fragmentShader;
 
+	std::string data;//create a variable to store the file info line by line
 	const char* vsSource;
 	const char* fsSource;
 	std::string vsSourceString;
