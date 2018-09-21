@@ -29,5 +29,6 @@ public:
 	void Draw() override;
 
 	std::vector<glm::vec4> genHalfCircle(int np);
+	std::vector<unsigned int> getIndices(int np, int nm);
 };
 

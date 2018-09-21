@@ -22,8 +22,12 @@ void MeshRenderer::render()
 {
 	glBindVertexArray(vao);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glDrawElements(GL_TRIANGLE_STRIP, m_indices.size(), GL_UNSIGNED_INT, 0);
+	glPrimitiveRestartIndex(0xFFFF);
 
+	glEnable(GL_PRIMITIVE_RESTART);
+	glDrawElements(GL_TRIANGLE_STRIP, m_indices.size(), GL_UNSIGNED_INT, 0);
+	glDisable(GL_PRIMITIVE_RESTART);
+	
 	glBindVertexArray(0);
 }
 
