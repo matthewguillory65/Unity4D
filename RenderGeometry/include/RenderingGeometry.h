@@ -28,7 +28,8 @@ public:
 	void Update(float dt) override;
 	void Draw() override;
 
-	std::vector<glm::vec4> genHalfCircle(int np);
+	std::vector<glm::vec4> genHalfCircle(int np, int radius);
 	std::vector<unsigned int> getIndices(int np, int nm);
+	std::vector<glm::vec4> rotateHalfCirlce(std::vector<glm::vec4> points, unsigned int rotate);
 };
 

@@ -30,10 +30,13 @@ void RenderingGeometry::Startup()
 	auto abcd = { glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1) };
 	std::vector<MeshRenderer::Vertex>m_vertices = { a,b,c,d };
 	std::vector<unsigned int>m_indices = { 0 ,1,2,2,3,0 };*/
-	int np = 4;
-	int nm = 4;
+	int np = 100;
+	int nm = 100;
 	mesh = new MeshRenderer();
-	std::vector<glm::vec4> points = genHalfCircle(np);
+
+	std::vector<glm::vec4> points = genHalfCircle(np, 5);
+
+	points = rotateHalfCirlce(points, nm);
 
 	std::vector<unsigned int> indices = getIndices(np, nm);
 
@@ -44,8 +47,6 @@ void RenderingGeometry::Startup()
 		vertexs.push_back(vertex);
 	}
 	mesh->initialize(indices, vertexs);
-	std::vector<unsigned int> gInd = getIndices(np, nm);
-
 
 	shader = new Shader();
 
@@ -54,10 +55,7 @@ void RenderingGeometry::Startup()
 
 	shader->attach();
 
-
-
 	movement = glm::mat4(1);
-
 }
 
 void RenderingGeometry::Shutdown()
@@ -68,14 +66,15 @@ void RenderingGeometry::Shutdown()
 void RenderingGeometry::Update(float dt)
 {
 	m_model = glm::mat4(1);
-	glm::vec3 eye = glm::vec3(0, -20, 300);
+	glm::vec3 eye = glm::vec3(0, -20, 200);
 	m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
 	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
+	glm::mat4 rot = glm::rotate(glm::mat4(1), glm::cos(dt), glm::vec3(0, 1, 0));
+	m_model = m_model * rot * rot * rot * rot;
 }
 
 void RenderingGeometry::Draw()
 {
-
 	glUseProgram(shader->m_program);
 	shader->Bind();
 	auto varid = shader->getUniform("ProjectionViewWorld");
@@ -83,16 +82,18 @@ void RenderingGeometry::Draw()
 	int yPos = 100;
 	int xMultiple = 0;
 
+	//Values of how far to move
 	Transform transform;
-	glm::vec3 up(0, 2, 0);
-	glm::vec3 down(0, -2, 0);
-	glm::vec3 right(2, 0, 0);
-	glm::vec3 left(-2, 0, 0);
-	glm::vec3 in(0, 0, 2);
-	glm::vec3 out(0, 0, -2);
+	glm::vec3 up(0, 1, 0);
+	glm::vec3 down(0, -1, 0);
+	glm::vec3 right(1, 0, 0);
+	glm::vec3 left(-1, 0, 0);
+	glm::vec3 in(0, 0, 1);
+	glm::vec3 out(0, 0, -1);
 
 	mesh->render();
 
+	//Movement
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		movement *= transform.Translate(up);
@@ -118,14 +119,14 @@ void RenderingGeometry::Draw()
 		movement *= transform.Translate(out);
 	}
 
-
-
-	for (int i = 1; i <= 100; i++)
+	//How many?
+	for (int i = 1; i <= 1; i++)
 	{
 		glm::mat4 modelSixFour = glm::mat4(1);
-		modelSixFour = glm::translate(modelSixFour, glm::vec3(-150, 0, 0));
+		modelSixFour = glm::translate(modelSixFour, glm::vec3(0, 0, 0));
 		modelSixFour = glm::translate(modelSixFour, glm::vec3(xMultiple * 20, yPos, 0));
-		glm::mat4 mvpSixFour = m_projection * m_view * modelSixFour * movement;
+		modelSixFour = glm::mat4(1) * glm::scale(glm::mat4(1), glm::vec3(20, 20, 20));
+		glm::mat4 mvpSixFour = m_projection * m_view * modelSixFour * movement * m_model;
 		glUniformMatrix4fv(varid, 1, GL_FALSE, &mvpSixFour[0][0]);
 		mesh->render();
 		xMultiple++;
@@ -137,62 +138,58 @@ void RenderingGeometry::Draw()
 	}
 
 	shader->UnBind();
-	/*RenderingGeometry render;
-	render.genHalfCircle(5);*/
 	glUseProgram(0);
 }
-
-std::vector<glm::vec4> RenderingGeometry::genHalfCircle(int np)
+float runningTime = 0;
+std::vector<glm::vec4> RenderingGeometry::genHalfCircle(int np, int radius)
 {
-	glm::vec4 point;
 	std::vector<glm::vec4> points;
-	float slice = 3.14 / np;
-	float theta = 0;
-	for(int i = 0; i < np - 1; i++)
-	{		
-		
-		points.push_back(glm::vec4(glm::cos(theta), glm::sin(theta), 0, 1));
-		theta += slice;
-	}
-	/*for (float theta = 0; theta < 3.14; theta += angle)
+	float slice = glm::pi<float>() / (float)(np-1);
+	
+	for(int i = 0; i < np; i++)
 	{
-		points.push_back(glm::vec4(glm::cos(theta), glm::sin(theta), 0, 1));
-	}*/
-
-	//How do we make this rotate?
-	//
+		float theta = i * slice;
+		points.push_back(glm::vec4(radius*glm::cos(theta), radius*glm::sin(theta), 0, 1));
+	}
 
 	return points;
 }
 
 std::vector<unsigned int> RenderingGeometry::getIndices(int np, int nm)
-{
+{//u stay away from hyeah
 	std::vector<unsigned int> indices;
-	std::vector<unsigned int> bot_Left;
-	std::vector<unsigned int> bot_Right;
 	int y = 0;
 
-	for (int j = 0; j < nm - 1; j++)
+	for (int j = 0; j < nm; j++)
 	{
 		for (int i = 0; i < np; i++)
 		{
-			bot_Left.push_back(y);
-			bot_Right.push_back(y + np);
+			indices.push_back(y);
+			indices.push_back(y + np);
 			y++;
 		}
+		indices.push_back(0xFFFF);
+	}//u stay away from hyeah
+	return indices;
+}
 
-	}
-	for (int x = 1; x <= bot_Left.size(); x++)
+std::vector<glm::vec4> RenderingGeometry::rotateHalfCirlce(std::vector<glm::vec4> points, unsigned int nm)
+{
+	std::vector<glm::vec4> allPoints;
+	for (int i = 0; i <= nm; i++)
 	{
-		indices.push_back(bot_Left[x - 1]);
-		indices.push_back(bot_Right[x - 1]);
-		if (x % 3 == 0)
+		float slice = 2.0f * glm::pi<float>() / (float)nm ;
+		float theta = i * slice;
+		for (int j = 0; j < points.size(); j++)
 		{
-			indices.push_back(0xFFFF);
+			float newX = points[j].x;
+			float newY = points[j].y * cos(theta) + points[j].z * -sin(theta);
+			float newZ = points[j].z * cos(theta) + points[j].y * sin(theta);
+			allPoints.push_back(glm::vec4(newX, newY, newZ, 1));
+			//allPoints[i] = glm::round(allPoints[i]);
 		}
 	}
-	return indices;
-
+	return allPoints;
 }
 
 //2	6	9	12	15

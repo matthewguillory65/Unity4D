@@ -30,13 +30,13 @@ void MyApplication::run(const char * title, unsigned int width, unsigned int hei
 	while (glfwWindowShouldClose(m_window) == false && glfwGetKey(m_window, GLFW_KEY_ESCAPE) != GLFW_PRESS)
 	{
 		float currentTime = glfwGetTime();
-		float deltaTime = currentTime - prevTime;
+		
 		prevTime = currentTime;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwPollEvents();
 		
 
-		Update(deltaTime);		
+		Update(currentTime);		
 		Draw();
 
 		glfwSwapBuffers(m_window);
