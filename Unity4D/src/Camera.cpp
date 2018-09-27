@@ -2,7 +2,7 @@
 #include "Transform.h"
 Camera::Camera()
 {
-	setPerspective(glm::pi<float>() * .25f, 16/9, .1, 1000);
+	setPerspective(glm::pi<float>(), 16/9, .1, 1000.f);
 }
 
 
@@ -13,7 +13,13 @@ Camera::~Camera()
 
 void Camera::setPerspective(float fOv, float aR, float Near, float Far)
 {
-	glm::perspective(fOv, aR, Near, Far);
+	projectionTransform[0].x = 1 / (aR * tan(fOv / 2));
+	projectionTransform[1].y = 1 / tan(fOv / 2);
+	projectionTransform[2].z = -((Far + Near) / (Far - Near));
+	projectionTransform[2].w = -1;
+	projectionTransform[3].z = -(2 * Far*Near / (Far - Near));
+	auto expected = glm::perspective(fOv, aR, Near, Far);
+	assert(expected == projectionTransform);
 }
 
 void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)

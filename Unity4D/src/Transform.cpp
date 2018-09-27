@@ -26,6 +26,14 @@ glm::mat4 Transform::Translate(glm::vec3 move)
 	return m_model;
 }
 
+glm::mat4 Transform::MoveCamera(glm::vec3 move)
+{
+	glm::mat4 translation = glm::mat4(1);
+	translation[3].xyz = move;
+	m_view = m_view * translation;
+	return m_view;
+}
+
 glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 {
 	auto cosine = cos(radians);
@@ -37,28 +45,28 @@ glm::mat4 Transform::Rotate(float radians, glm::vec3 axis)
 	if (axis == glm::vec3(1, 0, 0))
 	{
 		//When rotating on the x-axis, the x-axis will not move
-		m_model[1].y = cosine;
-		m_model[1].z = -sine;
-		m_model[2].y = cosine;
-		m_model[2].z = sine;
+		m_model[1].y += cosine;
+		m_model[1].z += -sine;
+		m_model[2].y += cosine;
+		m_model[2].z += sine;
 	}
 
 	if (axis == glm::vec3(0, 1, 0))
 	{
 		//When rotating on the y-axis, the y-axis will not move
-		m_model[0].x = cosine;
-		m_model[0].z = -sine;
-		m_model[2].x = sine;
-		m_model[2].z = cosine;
+		m_model[0].x += cosine;
+		m_model[0].z += -sine;
+		m_model[2].x += sine;
+		m_model[2].z += cosine;
 	}
 
 	if (axis == glm::vec3(0, 0, 1))
 	{
 		//When rotating on the z-axis, the z-axis will not move
-		m_model[1].x = -sine;
-		m_model[1].y = cosine;
-		m_model[0].x = sine;
-		m_model[0].y = cosine;
+		m_model[1].x += -sine;
+		m_model[1].y += cosine;
+		m_model[0].x += sine;
+		m_model[0].y += cosine;
 	}
 	return m_model;
 }

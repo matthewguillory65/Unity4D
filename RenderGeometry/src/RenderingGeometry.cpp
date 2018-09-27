@@ -1,7 +1,8 @@
 #define GLM_FORCE_SWIZZLE
-#include <iostream>
 #include "RenderingGeometry.h"
 #include "Shader.h"
+#include "MeshRenderer.h"
+#include "Camera.h"
 
 RenderingGeometry::RenderingGeometry()
 {
@@ -48,6 +49,9 @@ void RenderingGeometry::Startup()
 	}
 	mesh->initialize(indices, vertexs);
 
+	std::vector<unsigned int> cubeInd = getCubeIndices();
+	std::vector<glm::vec4> cube = genCube();
+
 	shader = new Shader();
 
 	shader->load("shader.muh", Shader::SHADER_TYPE::VERTEX);
@@ -63,12 +67,14 @@ void RenderingGeometry::Shutdown()
 
 }
 
+Camera myCamera;
 void RenderingGeometry::Update(float dt)
 {
 	m_model = glm::mat4(1);
 	glm::vec3 eye = glm::vec3(0, -20, 200);
 	m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
-	m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
+	//m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
+	myCamera.setPerspective(glm::pi<float>(), 800 / (float)600, .1, 1000.f);
 	glm::mat4 rot = glm::rotate(glm::mat4(1), glm::cos(dt), glm::vec3(0, 1, 0));
 	m_model = m_model * rot * rot * rot * rot;
 }
@@ -118,13 +124,14 @@ void RenderingGeometry::Draw()
 	{
 		movement *= transform.Translate(out);
 	}
+	
 
 	//How many?
-	for (int i = 1; i <= 1; i++)
+	for (int i = 1; i <= 100; i++)
 	{
 		glm::mat4 modelSixFour = glm::mat4(1);
 		modelSixFour = glm::translate(modelSixFour, glm::vec3(0, 0, 0));
-		modelSixFour = glm::translate(modelSixFour, glm::vec3(xMultiple * 20, yPos, 0));
+		modelSixFour = glm::translate(modelSixFour, glm::vec3(xMultiple * 2, yPos, 0));
 		modelSixFour = glm::mat4(1) * glm::scale(glm::mat4(1), glm::vec3(20, 20, 20));
 		glm::mat4 mvpSixFour = m_projection * m_view * modelSixFour * movement * m_model;
 		glUniformMatrix4fv(varid, 1, GL_FALSE, &mvpSixFour[0][0]);
@@ -190,6 +197,47 @@ std::vector<glm::vec4> RenderingGeometry::rotateHalfCirlce(std::vector<glm::vec4
 		}
 	}
 	return allPoints;
+}
+
+std::vector<unsigned int> RenderingGeometry::getCubeIndices()
+{
+	std::vector<unsigned int> indices =
+	{	0, 1, 2, 2, 3, 0,//front
+		3, 2, 4, 4, 5, 2,//Bot
+		4, 5, 6, 6, 7, 4,//Back
+		6, 7, 8, 8, 9, 6,//Top
+		2, 1, 10, 10, 11, 2,//Right
+		0, 3, 12, 12, 13, 0//Left
+	};
+	return indices;
+}
+
+std::vector<glm::vec4> RenderingGeometry::genCube()
+{
+	std::vector<glm::vec4> verts
+		//Front
+	{	
+		(glm::vec4(0, 1, 1, 1), glm::vec4(1)),//0
+		(glm::vec4(1, 1, 1, 1), glm::vec4(1)),//1
+		(glm::vec4(1, 0, 1, 1), glm::vec4(1)),//2
+		(glm::vec4(0, 0, 1, 1), glm::vec4(1)),//3
+																	 //Bot
+		(glm::vec4(0, 0, 0, 1), glm::vec4(1)),//4
+		(glm::vec4(1, 0, 0, 1), glm::vec4(1)),//5
+																	 //Back
+		(glm::vec4(1, 1, 0, 1), glm::vec4(1)),//6
+		(glm::vec4(0, 1, 0, 1), glm::vec4(1)),//7
+																	 //Top
+		(glm::vec4(0, 1, 1, 1), glm::vec4(1)),//8
+		(glm::vec4(1, 1, 1, 1), glm::vec4(1)),//9
+																 //Right
+		(glm::vec4(1, 1, 0, 1), glm::vec4(1)),//10
+		(glm::vec4(1, 0, 0, 1), glm::vec4(1)),//11
+																 //Left
+		(glm::vec4(0, 1, 0, 1), glm::vec4(1)),//12
+		(glm::vec4(0, 0, 0, 1), glm::vec4(1))//13
+	};
+	return verts;
 }
 
 //2	6	9	12	15

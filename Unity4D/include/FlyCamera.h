@@ -9,6 +9,7 @@ public:
 	void update(float dt);
 private:
 	float speed;
+	glm::mat4 movement;
 	glm::vec3 up;
 	glm::vec3 right;
 	glm::vec3 out;

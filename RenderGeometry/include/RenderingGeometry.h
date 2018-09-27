@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "MyApplication.h"
 #include "Transform.h"
 #include <vector>
@@ -12,8 +13,6 @@ class RenderingGeometry : public MyApplication
 public:
 	RenderingGeometry();
 	~RenderingGeometry();
-
-
 	MeshRenderer* mesh;
 	Shader* shader;
 	Transform* transform = new Transform();
@@ -31,5 +30,7 @@ public:
 	std::vector<glm::vec4> genHalfCircle(int np, int radius);
 	std::vector<unsigned int> getIndices(int np, int nm);
 	std::vector<glm::vec4> rotateHalfCirlce(std::vector<glm::vec4> points, unsigned int rotate);
+	std::vector<unsigned int> getCubeIndices();
+	std::vector<glm::vec4> genCube();
 };
 
