@@ -74,7 +74,7 @@ void RenderingGeometry::Update(float dt)
 	glm::vec3 eye = glm::vec3(0, -20, 200);
 	m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
 	//m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
-	myCamera.setPerspective(glm::pi<float>(), 800 / (float)600, .1, 1000.f);
+	m_projection = myCamera.setPerspective(90, 800 / (float)600, .1f, 1000.f);
 	glm::mat4 rot = glm::rotate(glm::mat4(1), glm::cos(dt), glm::vec3(0, 1, 0));
 	m_model = m_model * rot * rot * rot * rot;
 }
@@ -89,7 +89,6 @@ void RenderingGeometry::Draw()
 	int xMultiple = 0;
 
 	//Values of how far to move
-	Transform transform;
 	glm::vec3 up(0, 1, 0);
 	glm::vec3 down(0, -1, 0);
 	glm::vec3 right(1, 0, 0);
@@ -102,27 +101,27 @@ void RenderingGeometry::Draw()
 	//Movement
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
-		movement *= transform.Translate(up);
+		movement *= myCamera.movement(up);
 	}
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
-		movement *= transform.Translate(down);
+		movement *= myCamera.movement(down);
 	}
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		movement *= transform.Translate(right);
+		movement *= myCamera.movement(right);
 	}
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		movement *= transform.Translate(left);
+		movement *= myCamera.movement(left);
 	}
 	if (GetAsyncKeyState('Q') & 0x8000)
 	{
-		movement *= transform.Translate(in);
+		movement *= myCamera.movement(in);
 	}
 	if (GetAsyncKeyState('Z') & 0x8000)
 	{
-		movement *= transform.Translate(out);
+		movement *= myCamera.movement(out);
 	}
 	
 
@@ -215,8 +214,8 @@ std::vector<unsigned int> RenderingGeometry::getCubeIndices()
 std::vector<glm::vec4> RenderingGeometry::genCube()
 {
 	std::vector<glm::vec4> verts
-		//Front
-	{	
+		
+	{																//Front
 		(glm::vec4(0, 1, 1, 1), glm::vec4(1)),//0
 		(glm::vec4(1, 1, 1, 1), glm::vec4(1)),//1
 		(glm::vec4(1, 0, 1, 1), glm::vec4(1)),//2

@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\RenderingGeometry.h" />
+    <ClInclude Include="Light.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Unity4D\Unity4D.vcxproj">

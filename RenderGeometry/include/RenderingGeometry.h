@@ -21,6 +21,7 @@ public:
 	glm::mat4 m_view;
 	glm::mat4 m_projection;
 	glm::mat4 movement;
+	glm::mat4 perspectiveProjection;
 
 	void Startup() override;
 	void Shutdown() override;

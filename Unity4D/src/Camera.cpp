@@ -11,15 +11,14 @@ Camera::~Camera()
 
 }
 
-void Camera::setPerspective(float fOv, float aR, float Near, float Far)
+glm::mat4 Camera::setPerspective(float fOv, float aR, float Near, float Far)
 {
 	projectionTransform[0].x = 1 / (aR * tan(fOv / 2));
 	projectionTransform[1].y = 1 / tan(fOv / 2);
 	projectionTransform[2].z = -((Far + Near) / (Far - Near));
 	projectionTransform[2].w = -1;
 	projectionTransform[3].z = -(2 * Far*Near / (Far - Near));
-	auto expected = glm::perspective(fOv, aR, Near, Far);
-	assert(expected == projectionTransform);
+	return projectionTransform;
 }
 
 void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)
@@ -52,4 +51,12 @@ glm::mat4 Camera::getProjection()
 glm::mat4 Camera::getProjectionView()
 {
 	return this->projectionViewTransform;
+}
+
+glm::mat4 Camera::movement(glm::vec3 move)
+{
+	glm::mat4 translation = glm::mat4(1);
+	translation[3].xyz = move;
+	m_view = m_view * translation;
+	return m_view;
 }
