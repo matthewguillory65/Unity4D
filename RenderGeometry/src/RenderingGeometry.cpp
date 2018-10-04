@@ -8,7 +8,7 @@ RenderingGeometry::RenderingGeometry()
 {
 }
 
-
+float runningTime = 0;
 RenderingGeometry::~RenderingGeometry()
 {
 
@@ -24,13 +24,15 @@ RenderingGeometry::~RenderingGeometry()
 
 void RenderingGeometry::Startup()
 {
-	/*MeshRenderer::Vertex a = { glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1) };
+	MeshRenderer::Vertex a = { glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1) };
 	MeshRenderer::Vertex b = { glm::vec4(10, 10, 0, 1), glm::vec4(0, 1, 0, 1) };
 	MeshRenderer::Vertex c = { glm::vec4(10, -10, 0, 1), glm::vec4(0, 0, 1, 1) };
 	MeshRenderer::Vertex d = { glm::vec4(-10, -10, 0, 1), glm::vec4(0, 0, 0, 1) };
 	auto abcd = { glm::vec4(-10, 10, 0, 1), glm::vec4(1, 0, 0, 1) };
 	std::vector<MeshRenderer::Vertex>m_vertices = { a,b,c,d };
-	std::vector<unsigned int>m_indices = { 0 ,1,2,2,3,0 };*/
+	std::vector<unsigned int>m_indices = { 0 ,1,2,2,3,0 };
+
+
 	int np = 100;
 	int nm = 100;
 	mesh = new MeshRenderer();
@@ -44,7 +46,7 @@ void RenderingGeometry::Startup()
 	std::vector<MeshRenderer::Vertex> vertexs;
 	for (glm::vec4 point : points)
 	{
-		MeshRenderer::Vertex vertex = { point, glm::vec4(1, 1, 1, 1) };
+		MeshRenderer::Vertex vertex = { point, glm::vec4(0, 1, 1, 1) };
 		vertexs.push_back(vertex);
 	}
 	mesh->initialize(indices, vertexs);
@@ -70,31 +72,53 @@ void RenderingGeometry::Shutdown()
 Camera myCamera;
 void RenderingGeometry::Update(float dt)
 {
+	
 	m_model = glm::mat4(1);
-	glm::vec3 eye = glm::vec3(0, -20, 200);
+	glm::vec3 eye = glm::vec3(0, -20, 250);
 	m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
-	//m_projection = glm::perspective(glm::quarter_pi<float>(), 800 / (float)600, 0.1f, 1000.f);
-	m_projection = myCamera.setPerspective(90, 800 / (float)600, .1f, 1000.f);
+	if (GetAsyncKeyState('V') & 0x8000)
+	{
+		m_projection = myCamera.setPerspective(90, 800 / (float)600, .1f, 1000.f);
+	}
+	if (GetAsyncKeyState('B') & 0x8000)
+	{
+		m_projection = myCamera.setOrthographic(-50, 50, -50, 50, 0.1f, 700);
+	}
 	glm::mat4 rot = glm::rotate(glm::mat4(1), glm::cos(dt), glm::vec3(0, 1, 0));
-	m_model = m_model * rot * rot * rot * rot;
+	//m_model = m_model * rot * rot * rot * rot;
+	runningTime = dt * 2;
 }
-
 void RenderingGeometry::Draw()
 {
 	glUseProgram(shader->m_program);
 	shader->Bind();
+	auto cameraPos = shader->getUniform("cameraPosition");
 	auto varid = shader->getUniform("ProjectionViewWorld");
+	auto lightDirection = shader->getUniform("lightDirection");
+	auto lightColor = shader->getUniform("lightColor");
+	auto lightPosition = shader->getUniform("lightPosition");
+
+	glm::vec3 lP = glm::vec3( 1, 1, 0 );
+	glm::vec3 lD = glm::vec3(-1, -1, 0);
+	glm::vec3 camPosition = glm::vec3(0, -20, 200);
+	glm::vec4 lC = glm::vec4(1, 1, 0, 1);
+	lD *= glm::cos(runningTime);
+
+	glUniform3fv(lightPosition, 1, &lP[0]);
+	glUniform3fv(lightDirection, 1, &lD[0]);
+	glUniform4fv(lightColor, 1, &lC[0]);
+	glUniform3fv(cameraPos, 1, &camPosition[0]);
 
 	int yPos = 100;
 	int xMultiple = 0;
 
 	//Values of how far to move
-	glm::vec3 up(0, 1, 0);
-	glm::vec3 down(0, -1, 0);
-	glm::vec3 right(1, 0, 0);
-	glm::vec3 left(-1, 0, 0);
-	glm::vec3 in(0, 0, 1);
-	glm::vec3 out(0, 0, -1);
+	glm::vec3 up(0, -.1, 0);
+	glm::vec3 down(0, .1, 0);
+	glm::vec3 right(-.1, 0, 0);
+	glm::vec3 left(.1, 0, 0);
+	glm::vec3 in(0, 0, .1);
+	glm::vec3 out(0, 0, -.1);
 
 	mesh->render();
 
@@ -123,10 +147,9 @@ void RenderingGeometry::Draw()
 	{
 		movement *= myCamera.movement(out);
 	}
-	
 
 	//How many?
-	for (int i = 1; i <= 100; i++)
+	for (int i = 1; i <= 1; i++)
 	{
 		glm::mat4 modelSixFour = glm::mat4(1);
 		modelSixFour = glm::translate(modelSixFour, glm::vec3(0, 0, 0));
@@ -146,7 +169,7 @@ void RenderingGeometry::Draw()
 	shader->UnBind();
 	glUseProgram(0);
 }
-float runningTime = 0;
+
 std::vector<glm::vec4> RenderingGeometry::genHalfCircle(int np, int radius)
 {
 	std::vector<glm::vec4> points;
@@ -162,7 +185,7 @@ std::vector<glm::vec4> RenderingGeometry::genHalfCircle(int np, int radius)
 }
 
 std::vector<unsigned int> RenderingGeometry::getIndices(int np, int nm)
-{//u stay away from hyeah
+{
 	std::vector<unsigned int> indices;
 	int y = 0;
 
@@ -175,7 +198,7 @@ std::vector<unsigned int> RenderingGeometry::getIndices(int np, int nm)
 			y++;
 		}
 		indices.push_back(0xFFFF);
-	}//u stay away from hyeah
+	}
 	return indices;
 }
 
@@ -254,3 +277,10 @@ std::vector<glm::vec4> RenderingGeometry::genCube()
 //Here we would need to start over
 //bot_left = i;
 //bot_right = i + np; np = numberofPoints
+//refRay = -(lightDirection - vPosition);
+//normalRefRay = normalize(refRay);
+//viewDir = cameraPosition - vPosition;
+//normalViewDir = normalize(viewDir);
+//dotRRVD = dot(normalRefRay, normalViewDir);
+//specPower = 5f;
+//specular = vColor * dotRRVD * lightColor;

@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "Transform.h"
-Camera::Camera()
+Camera::Camera() : projectionTransform(glm::mat4(1))
 {
 	setPerspective(glm::pi<float>(), 16/9, .1, 1000.f);
 }
@@ -18,6 +18,18 @@ glm::mat4 Camera::setPerspective(float fOv, float aR, float Near, float Far)
 	projectionTransform[2].z = -((Far + Near) / (Far - Near));
 	projectionTransform[2].w = -1;
 	projectionTransform[3].z = -(2 * Far*Near / (Far - Near));
+	return projectionTransform;
+}
+
+glm::mat4 Camera::setOrthographic(float l, float r, float t, float b, float n, float f)
+{
+	projectionTransform[0].x = 2 / (r - l);
+	projectionTransform[1].y = 2 / (t - b);
+	projectionTransform[2].z = -2 / (f - n);
+	projectionTransform[3].x = -((r + l) / (r - l));
+	projectionTransform[3].y = -((t + b) / (t - b));
+	projectionTransform[3].z = -((f + n) / (f - n));
+	auto expected = glm::ortho(l, r, t, b, n, f);
 	return projectionTransform;
 }
 
@@ -57,6 +69,6 @@ glm::mat4 Camera::movement(glm::vec3 move)
 {
 	glm::mat4 translation = glm::mat4(1);
 	translation[3].xyz = move;
-	m_view = m_view * translation;
+	m_view = translation;
 	return m_view;
 }
