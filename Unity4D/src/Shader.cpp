@@ -51,24 +51,6 @@ bool Shader::load(const char * filename, Shader::SHADER_TYPE shadertype)
 	{
 		fsSource = fsSourceString.c_str();
 	}
-
-
-	//while (std::fgets(buf, sizeof buf, file))//go line by line
-	//{
-	//	data.append(buf);//add line to data
-	//}
-	//err = fclose(file);//close the file
-	//const char* tmp = data.c_str();
-	//switch (shadertype)
-	//{
-	//case Shader::SHADER_TYPE::VERTEX:
-	//	
-	//	break;
-	//case Shader::SHADER_TYPE::FRAGMENT:
-	//	memcpy(&fsSource, &tmp, 250);
-	//	break;
-	//}
-
 	return data.length() > 0;
 }
 

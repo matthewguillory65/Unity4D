@@ -88,6 +88,7 @@ void RenderingGeometry::Update(float dt)
 	//m_model = m_model * rot * rot * rot * rot;
 	runningTime = dt * 2;
 }
+
 void RenderingGeometry::Draw()
 {
 	glUseProgram(shader->m_program);
