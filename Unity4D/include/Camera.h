@@ -11,7 +11,7 @@ public:
 	glm::mat4 setPerspective(float fOv, float aR, float Near, float Far);
 	glm::mat4 setOrthographic(float l, float r, float t, float b, float n, float f);
 	//fOv = fieldOfview, aR = aspectRatio
-	void setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up);
+	glm::mat4 setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 tmpr);
 	void setPosition(glm::vec3 position);
 	glm::mat4 getWorldTransform();
 	glm::mat4 getView();

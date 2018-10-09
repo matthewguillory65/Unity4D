@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "Transform.h"
-Camera::Camera() : projectionTransform(glm::mat4(1))
+Camera::Camera() : projectionTransform(glm::mat4(1)), viewTransform(glm::mat4(1))
 {
 	setPerspective(glm::pi<float>(), 16/9, .1, 1000.f);
 }
@@ -17,7 +17,8 @@ glm::mat4 Camera::setPerspective(float fOv, float aR, float Near, float Far)
 	projectionTransform[1].y = 1 / tan(fOv / 2);
 	projectionTransform[2].z = -((Far + Near) / (Far - Near));
 	projectionTransform[2].w = -1;
-	projectionTransform[3].z = -(2 * Far*Near / (Far - Near));
+	projectionTransform[3].z = -(2 * Far * Near / (Far - Near));
+	auto expected = glm::perspective(fOv, aR, Near, Far);
 	return projectionTransform;
 }
 
@@ -33,9 +34,29 @@ glm::mat4 Camera::setOrthographic(float l, float r, float t, float b, float n, f
 	return projectionTransform;
 }
 
-void Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 up)
+glm::mat4 Camera::setLookAt(glm::vec3 from, glm::vec3 to, glm::vec3 tmpr)
 {
-	glm::lookAt(from, to, up);
+	glm::vec3 forward = glm::normalize(from - to);
+	glm::vec3 right = glm::cross(normalize(tmpr), forward);
+	glm::vec3 up = glm::cross(forward, right);
+
+	viewTransform[0][0] = right.x;
+	viewTransform[0][1] = right.y;
+	viewTransform[0][2] = right.z;
+	viewTransform[1][0] = up.x;
+	viewTransform[1][1] = up.y;
+	viewTransform[1][2] = -up.z;
+	viewTransform[2][0] = forward.x;
+	viewTransform[2][1] = -forward.y;
+	viewTransform[2][2] = forward.z;
+
+	viewTransform[3][0] = -from.x;
+	viewTransform[3][1] = from.y;
+	viewTransform[3][2] = -from.z;
+
+	auto expected = glm::lookAt(glm::vec3(0, -20, 250), glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
+
+	return viewTransform;
 }
 
 void Camera::setPosition(glm::vec3 position)

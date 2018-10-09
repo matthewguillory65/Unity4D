@@ -75,7 +75,8 @@ void RenderingGeometry::Update(float dt)
 	
 	m_model = glm::mat4(1);
 	glm::vec3 eye = glm::vec3(0, -20, 250);
-	m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
+	//m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
+	m_view = myCamera.setLookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
 	if (GetAsyncKeyState('V') & 0x8000)
 	{
 		m_projection = myCamera.setPerspective(90, 800 / (float)600, .1f, 1000.f);
