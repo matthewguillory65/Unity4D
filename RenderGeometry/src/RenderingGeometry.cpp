@@ -59,6 +59,8 @@ void RenderingGeometry::Startup()
 	shader->load("shader.muh", Shader::SHADER_TYPE::VERTEX);
 	shader->load("shader.fuh", Shader::SHADER_TYPE::FRAGMENT);
 
+	//tex.load("Textures.png");
+
 	shader->attach();
 
 	movement = glm::mat4(1);
@@ -75,8 +77,9 @@ void RenderingGeometry::Update(float dt)
 	
 	m_model = glm::mat4(1);
 	glm::vec3 eye = glm::vec3(0, -20, 250);
-	//m_view = glm::lookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
+	//My Set Look At function
 	m_view = myCamera.setLookAt(eye, glm::vec3(0, 1, 10), glm::vec3(0, 1, 0));
+	//Switching between Perspective and Orthographic
 	if (GetAsyncKeyState('V') & 0x8000)
 	{
 		m_projection = myCamera.setPerspective(90, 800 / (float)600, .1f, 1000.f);
@@ -85,6 +88,7 @@ void RenderingGeometry::Update(float dt)
 	{
 		m_projection = myCamera.setOrthographic(-50, 50, -50, 50, 0.1f, 700);
 	}
+	//Rotation
 	glm::mat4 rot = glm::rotate(glm::mat4(1), glm::cos(dt), glm::vec3(0, 1, 0));
 	//m_model = m_model * rot * rot * rot * rot;
 	runningTime = dt * 2;
@@ -263,26 +267,3 @@ std::vector<glm::vec4> RenderingGeometry::genCube()
 	};
 	return verts;
 }
-
-//2	6	9	12	15
-//1	5	8	11	14			number of maridians = nm
-//0	4	7	10	13
-//0, 3, 1, 4, 2, 5, 0xFFFF
-//
-//2__5
-//|\ |
-//|	\|
-//1__4
-//|\ |
-//|	\|
-//0__3
-//Here we would need to start over
-//bot_left = i;
-//bot_right = i + np; np = numberofPoints
-//refRay = -(lightDirection - vPosition);
-//normalRefRay = normalize(refRay);
-//viewDir = cameraPosition - vPosition;
-//normalViewDir = normalize(viewDir);
-//dotRRVD = dot(normalRefRay, normalViewDir);
-//specPower = 5f;
-//specular = vColor * dotRRVD * lightColor;

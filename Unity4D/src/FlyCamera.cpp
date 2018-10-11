@@ -32,26 +32,28 @@ void FlyCamera::update(float dt)
 	
 	auto currentPosition = glm::vec3(getWorldTransform()[3].x, getWorldTransform()[3].y, getWorldTransform()[3].z);
 
-	if (glfwGetKey(window, GLFW_KEY_W))
-	{
-		movement *= transform.Translate(up);
-		//setPosition(currentPosition.y + glm::vec3(0, 0, speed) * dt);
-	}
-	if (glfwGetKey(window, GLFW_KEY_S))
-	{
-		movement *= transform.Translate(down);
-		//setPosition(currentPosition.y - glm::vec3(0, 0, speed) * dt);
-	}
-	if (glfwGetKey(window, GLFW_KEY_D))
-	{
-		movement *= transform.Translate(right);
-		//setPosition(currentPosition.x - glm::vec3(speed, 0, 0) * dt);
-	}
-	if (glfwGetKey(window, GLFW_KEY_A))
-	{
-		movement *= transform.Translate(left);
-		//setPosition(currentPosition.x + glm::vec3(speed, 0, 0) * dt);
-	}
+
+	///None of this works. Movement will be done in the Rendering Geometry .cpp
+	//if (glfwGetKey(window, GLFW_KEY_W))
+	//{
+	//	movement *= transform.Translate(up);
+	//	//setPosition(currentPosition.y + glm::vec3(0, 0, speed) * dt);
+	//}
+	//if (glfwGetKey(window, GLFW_KEY_S))
+	//{
+	//	movement *= transform.Translate(down);
+	//	//setPosition(currentPosition.y - glm::vec3(0, 0, speed) * dt);
+	//}
+	//if (glfwGetKey(window, GLFW_KEY_D))
+	//{
+	//	movement *= transform.Translate(right);
+	//	//setPosition(currentPosition.x - glm::vec3(speed, 0, 0) * dt);
+	//}
+	//if (glfwGetKey(window, GLFW_KEY_A))
+	//{
+	//	movement *= transform.Translate(left);
+	//	//setPosition(currentPosition.x + glm::vec3(speed, 0, 0) * dt);
+	//}
 
 	projectionViewTransform = viewTransform * projectionTransform;
 }

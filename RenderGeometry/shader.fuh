@@ -8,17 +8,17 @@ uniform vec3 lightDirection;
 uniform vec3 lightPosition;
 void main()
 {
-	vec4 ambient = lightColor * vColor;
+	vec4 Ka = lightColor * vColor;
 	
 	vec3 vertexNormal = normalize(vPosition.xyz);
 	float lamber = dot(-lightDirection, vertexNormal);
-	vec4 diffuse = vColor * lamber * lightColor;
+	vec4 Kd = vColor * lamber * lightColor;
 	
 	float specPower = 3;
 	vec3 viewDir = normalize(cameraPosition.xyz - vPosition.xyz);
 	vec3 reflectDir = reflect(normalize(lightDirection), vertexNormal);
 	float spec = pow(max(dot(viewDir, reflectDir), 0), 256);
-	vec4 specular = specPower * spec * lightColor;
+	vec4 Ks = specPower * spec * lightColor;
 	
-	FragColor = ambient + diffuse + specular * specular;
+	FragColor = Ka + Kd + Ks;
 }

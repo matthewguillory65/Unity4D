@@ -4,9 +4,6 @@
 #include "Shader.h"
 #include <fstream>
 
-
-
-
 Shader::Shader()
 {
 	m_program = glCreateProgram();
@@ -105,5 +102,7 @@ void Shader::defaultLoad()
 
 unsigned int Shader::getUniform(const char *name)
 {
+	int id = glGetUniformLocation(m_program, name);
+	glUniform1i(id, 0);
 	return glGetUniformLocation(m_program, name);
 }

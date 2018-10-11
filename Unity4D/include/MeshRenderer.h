@@ -16,7 +16,7 @@ public:
 		glm::vec4 m_position;
 		glm::vec4 m_color;
 		glm::vec4 normal;
-		glm::vec2 texCoord;
+		glm::vec3 UV;
 	};
 
 	void initialize(std::vector<unsigned int>& m_indices, std::vector<Vertex>& m_vertices);
